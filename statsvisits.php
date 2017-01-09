@@ -1,6 +1,6 @@
 <?php
 /*
-* 2007-2016 PrestaShop
+* 2007-2015 PrestaShop
 *
 * NOTICE OF LICENSE
 *
@@ -19,76 +19,78 @@
 * needs please refer to http://www.prestashop.com for more information.
 *
 *  @author PrestaShop SA <contact@prestashop.com>
-*  @copyright  2007-2016 PrestaShop SA
+*  @copyright  2007-2015 PrestaShop SA
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
-if (!defined('_PS_VERSION_'))
-	exit;
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
 
-class StatsVisits extends ModuleGraph
+class statsvisits extends ModuleGraph
 {
-	private $html = '';
-	private $query = '';
+    private $html = '';
+    private $query = '';
 
-	public function __construct()
-	{
-		$this->name = 'statsvisits';
-		$this->tab = 'analytics_stats';
-		$this->version = '1.6.1';
-		$this->author = 'PrestaShop';
-		$this->need_instance = 0;
+    public function __construct()
+    {
+        $this->name = 'statsvisits';
+        $this->tab = 'analytics_stats';
+        $this->version = '1.6.0';
+        $this->author = 'PrestaShop';
+        $this->need_instance = 0;
 
-		parent::__construct();
+        parent::__construct();
 
-		$this->displayName = $this->l('Visits and Visitors');
-		$this->description = $this->l('Adds statistics about your visits and visitors to the Stats dashboard.');
-		$this->ps_versions_compliancy = array('min' => '1.6', 'max' => '1.7.0.99');
-	}
+        $this->displayName = $this->l('Visits and Visitors');
+        $this->description = $this->l('Adds statistics about your visits and visitors to the Stats dashboard.');
+        $this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
+    }
 
-	public function install()
-	{
-		return parent::install() && $this->registerHook('AdminStatsModules');
-	}
+    public function install()
+    {
+        return parent::install() && $this->registerHook('AdminStatsModules');
+    }
 
-	public function getTotalVisits()
-	{
-		$sql = 'SELECT COUNT(c.`id_connections`)
+    public function getTotalVisits()
+    {
+        $sql = 'SELECT COUNT(c.`id_connections`)
 				FROM `'._DB_PREFIX_.'connections` c
 				WHERE c.`date_add` BETWEEN '.ModuleGraph::getDateBetween().'
 					'.Shop::addSqlRestriction(false, 'c');
 
-		return Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($sql);
-	}
+        return Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($sql);
+    }
 
-	public function getTotalGuests()
-	{
-		$sql = 'SELECT COUNT(DISTINCT c.`id_guest`)
+    public function getTotalGuests()
+    {
+        $sql = 'SELECT COUNT(DISTINCT c.`id_guest`)
 				FROM `'._DB_PREFIX_.'connections` c
 				WHERE c.`date_add` BETWEEN '.ModuleGraph::getDateBetween().'
 					'.Shop::addSqlRestriction(false, 'c');
 
-		return Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($sql);
-	}
+        return Db::getInstance(_PS_USE_SQL_SLAVE_)->getValue($sql);
+    }
 
-	public function hookAdminStatsModules()
-	{
-		$graph_params = array(
-			'layers' => 2,
-			'type' => 'line',
-			'option' => 3,
-		);
+    public function hookAdminStatsModules()
+    {
+        $graph_params = array(
+            'layers' => 2,
+            'type' => 'line',
+            'option' => 3,
+        );
 
-		$total_visits = $this->getTotalVisits();
-		$total_guests = $this->getTotalGuests();
-		if (Tools::getValue('export'))
-			$this->csvExport(array(
-				'layers' => 2,
-				'type' => 'line',
-				'option' => 3
-			));
-		$this->html = '
+        $total_visits = $this->getTotalVisits();
+        $total_guests = $this->getTotalGuests();
+        if (Tools::getValue('export')) {
+            $this->csvExport(array(
+                'layers' => 2,
+                'type' => 'line',
+                'option' => 3
+            ));
+        }
+        $this->html = '
 		<div class="panel-heading">
 			'.$this->displayName.'
 		</div>
@@ -128,73 +130,72 @@ class StatsVisits extends ModuleGraph
 				</div>
 			</div>';
 
-		return $this->html;
-	}
+        return $this->html;
+    }
 
-	public function setOption($option, $layers = 1)
-	{
-		switch ($option)
-		{
-			case 3:
-				$this->_titles['main'][0] = $this->l('Number of visits and unique visitors');
-				$this->_titles['main'][1] = $this->l('Visits');
-				$this->_titles['main'][2] = $this->l('Visitors');
-				$this->query[0] = 'SELECT date_add, COUNT(`date_add`) as total
+    public function setOption($option, $layers = 1)
+    {
+        switch ($option) {
+            case 3:
+                $this->_titles['main'][0] = $this->l('Number of visits and unique visitors');
+                $this->_titles['main'][1] = $this->l('Visits');
+                $this->_titles['main'][2] = $this->l('Visitors');
+                $this->query[0] = 'SELECT date_add, COUNT(`date_add`) as total
 					FROM `'._DB_PREFIX_.'connections`
 					WHERE 1
 						'.Shop::addSqlRestriction().'
 						AND `date_add` BETWEEN ';
-				$this->query[1] = 'SELECT date_add, COUNT(DISTINCT `id_guest`) as total
+                $this->query[1] = 'SELECT date_add, COUNT(DISTINCT `id_guest`) as total
 					FROM `'._DB_PREFIX_.'connections`
 					WHERE 1
 						'.Shop::addSqlRestriction().'
 						AND `date_add` BETWEEN ';
-				break;
-		}
-	}
+                break;
+        }
+    }
 
-	protected function getData($layers)
-	{
-		$this->setDateGraph($layers, true);
-	}
+    protected function getData($layers)
+    {
+        $this->setDateGraph($layers, true);
+    }
 
-	protected function setAllTimeValues($layers)
-	{
-		for ($i = 0; $i < $layers; $i++)
-		{
-			$result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($this->query[$i].$this->getDate().' GROUP BY LEFT(date_add, 4)');
-			foreach ($result as $row)
-				$this->_values[$i][(int)Tools::substr($row['date_add'], 0, 4)] = (int)$row['total'];
-		}
-	}
+    protected function setAllTimeValues($layers)
+    {
+        for ($i = 0; $i < $layers; $i++) {
+            $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($this->query[$i].$this->getDate().' GROUP BY LEFT(date_add, 4)');
+            foreach ($result as $row) {
+                $this->_values[$i][(int)Tools::substr($row['date_add'], 0, 4)] = (int)$row['total'];
+            }
+        }
+    }
 
-	protected function setYearValues($layers)
-	{
-		for ($i = 0; $i < $layers; $i++)
-		{
-			$result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($this->query[$i].$this->getDate().' GROUP BY LEFT(date_add, 7)');
-			foreach ($result as $row)
-				$this->_values[$i][(int)Tools::substr($row['date_add'], 5, 2)] = (int)$row['total'];
-		}
-	}
+    protected function setYearValues($layers)
+    {
+        for ($i = 0; $i < $layers; $i++) {
+            $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($this->query[$i].$this->getDate().' GROUP BY LEFT(date_add, 7)');
+            foreach ($result as $row) {
+                $this->_values[$i][(int)Tools::substr($row['date_add'], 5, 2)] = (int)$row['total'];
+            }
+        }
+    }
 
-	protected function setMonthValues($layers)
-	{
-		for ($i = 0; $i < $layers; $i++)
-		{
-			$result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($this->query[$i].$this->getDate().' GROUP BY LEFT(date_add, 10)');
-			foreach ($result as $row)
-				$this->_values[$i][(int)Tools::substr($row['date_add'], 8, 2)] = (int)$row['total'];
-		}
-	}
+    protected function setMonthValues($layers)
+    {
+        for ($i = 0; $i < $layers; $i++) {
+            $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($this->query[$i].$this->getDate().' GROUP BY LEFT(date_add, 10)');
+            foreach ($result as $row) {
+                $this->_values[$i][(int)Tools::substr($row['date_add'], 8, 2)] = (int)$row['total'];
+            }
+        }
+    }
 
-	protected function setDayValues($layers)
-	{
-		for ($i = 0; $i < $layers; $i++)
-		{
-			$result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($this->query[$i].$this->getDate().' GROUP BY LEFT(date_add, 13)');
-			foreach ($result as $row)
-				$this->_values[$i][(int)Tools::substr($row['date_add'], 11, 2)] = (int)$row['total'];
-		}
-	}
+    protected function setDayValues($layers)
+    {
+        for ($i = 0; $i < $layers; $i++) {
+            $result = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS($this->query[$i].$this->getDate().' GROUP BY LEFT(date_add, 13)');
+            foreach ($result as $row) {
+                $this->_values[$i][(int)Tools::substr($row['date_add'], 11, 2)] = (int)$row['total'];
+            }
+        }
+    }
 }
