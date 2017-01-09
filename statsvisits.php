@@ -37,15 +37,15 @@ class statsvisits extends ModuleGraph
     {
         $this->name = 'statsvisits';
         $this->tab = 'analytics_stats';
-        $this->version = '1.6.0';
+        $this->version = '2.0.0';
         $this->author = 'PrestaShop';
         $this->need_instance = 0;
 
         parent::__construct();
 
-        $this->displayName = $this->l('Visits and Visitors');
-        $this->description = $this->l('Adds statistics about your visits and visitors to the Stats dashboard.');
-        $this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
+        $this->displayName = $this->trans('Visits and Visitors', array(), 'Modules.Statsvisits.Admin');
+        $this->description = $this->trans('Adds statistics about your visits and visitors to the Stats dashboard.', array(), 'Modules.Statsvisits.Admin');
+        $this->ps_versions_compliancy = array('min' => '1.7.0.0', 'max' => _PS_VERSION_);
     }
 
     public function install()
@@ -94,23 +94,23 @@ class statsvisits extends ModuleGraph
 		<div class="panel-heading">
 			'.$this->displayName.'
 		</div>
-		<h4>'.$this->l('Guide').'</h4>
+		<h4>'.$this->trans('Guide', array(), 'Admin.Global').'</h4>
 			<div class="alert alert-warning">
-				<h4>'.$this->l('Determine the interest of a visit').'</h4>
+				<h4>'.$this->trans('Determine the interest of a visit', array(), 'Modules.Statsvisits.Admin').'</h4>
 				<p>
-					'.$this->l('The visitors\' evolution graph strongly resembles the visits\' graph, but provides additional information:').'<br />
+					'.$this->trans('The visitors\' evolution graph strongly resembles the visits\' graph, but provides additional information:', array(), 'Modules.Statsvisits.Admin').'<br />
 				</p>
 				<ul>
-					<li>'.$this->l('If this is the case, congratulations, your website is well planned and pleasing. Glad to see that you\'ve been paying attention.').'</li>
-					<li>'.$this->l('Otherwise, the conclusion is not so simple. The problem can be aesthetic or ergonomic. It is also possible that many visitors have mistakenly visited your URL without possessing a particular interest in your shop. This strange and ever-confusing phenomenon is most likely cause by search engines. If this is the case, you should consider revising your SEO structure.').'</li>
+					<li>'.$this->trans('If this is the case, congratulations, your website is well planned and pleasing. Glad to see that you\'ve been paying attention.', array(), 'Modules.Statsvisits.Admin').'</li>
+					<li>'.$this->trans('Otherwise, the conclusion is not so simple. The problem can be aesthetic or ergonomic. It is also possible that many visitors have mistakenly visited your URL without possessing a particular interest in your shop. This strange and ever-confusing phenomenon is most likely cause by search engines. If this is the case, you should consider revising your SEO structure.', array(), 'Modules.Statsvisits.Admin').'</li>
 				</ul>
 				<p>
-					'.$this->l('This information is mostly qualitative. It is up to you to determine the interest of a disjointed visit.').'
+					'.$this->trans('This information is mostly qualitative. It is up to you to determine the interest of a disjointed visit.', array(), 'Modules.Statsvisits.Admin').'
 				</p>
 			</div>
 			<div class="alert alert-info">
-				'.$this->l('A visit corresponds to an internet user coming to your shop, and until the end of their session, only one visit is counted.').'
-				'.$this->l('A visitor is an unknown person who has not registered or logged into your store. A visitor can also be considered a person who has visited your shop multiple times.').'
+				'.$this->trans('A visit corresponds to an internet user coming to your shop, and until the end of their session, only one visit is counted.', array(), 'Modules.Statsvisits.Admin').'
+				'.$this->trans('A visitor is an unknown person who has not registered or logged into your store. A visitor can also be considered a person who has visited your shop multiple times.', array(), 'Modules.Statsvisits.Admin').'
 			</div>
 			<div class="row row-margin-bottom">
 				<div class="col-lg-12">
@@ -119,12 +119,12 @@ class statsvisits extends ModuleGraph
 					</div>
 					<div class="col-lg-4">
 						<ul class="list-unstyled">
-							<li>'.$this->l('Total visits:').' <span class="totalStats">'.$total_visits.'</span></li>
-							<li>'.$this->l('Total visitors:').' <span class="totalStats">'.$total_guests.'</span></li>
+							<li>'.$this->trans('Total visits:', array(), 'Modules.Statsvisits.Admin').' <span class="totalStats">'.$total_visits.'</span></li>
+							<li>'.$this->trans('Total visitors:', array(), 'Modules.Statsvisits.Admin').' <span class="totalStats">'.$total_guests.'</span></li>
 						</ul>
 						<hr/>
 						<a class="btn btn-default export-csv" href="'.Tools::safeOutput($_SERVER['REQUEST_URI'].'&export=1').'">
-							<i class="icon-cloud-upload"></i> '.$this->l('CSV Export').'
+							<i class="icon-cloud-upload"></i> '.$this->trans('CSV Export', array(), 'Modules.Statsvisits.Admin').'
 						</a> ' : '').'
 					</div>
 				</div>
@@ -137,9 +137,9 @@ class statsvisits extends ModuleGraph
     {
         switch ($option) {
             case 3:
-                $this->_titles['main'][0] = $this->l('Number of visits and unique visitors');
-                $this->_titles['main'][1] = $this->l('Visits');
-                $this->_titles['main'][2] = $this->l('Visitors');
+                $this->_titles['main'][0] = $this->trans('Number of visits and unique visitors', array(), 'Modules.Statsvisits.Admin');
+                $this->_titles['main'][1] = $this->trans('Visits', array(), 'Admin.ShopParameters.Feature');
+                $this->_titles['main'][2] = $this->trans('Visitors', array(), 'Admin.ShopParameters.Feature');
                 $this->query[0] = 'SELECT date_add, COUNT(`date_add`) as total
 					FROM `'._DB_PREFIX_.'connections`
 					WHERE 1
