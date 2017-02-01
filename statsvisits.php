@@ -138,8 +138,8 @@ class statsvisits extends ModuleGraph
         switch ($option) {
             case 3:
                 $this->_titles['main'][0] = $this->trans('Number of visits and unique visitors', array(), 'Modules.Statsvisits.Admin');
-                $this->_titles['main'][1] = $this->trans('Visits', array(), 'Admin.ShopParameters.Feature');
-                $this->_titles['main'][2] = $this->trans('Visitors', array(), 'Admin.ShopParameters.Feature');
+                $this->_titles['main'][1] = $this->trans('Visits', array(), 'Admin.Shopparameters.Feature');
+                $this->_titles['main'][2] = $this->trans('Visitors', array(), 'Admin.Shopparameters.Feature');
                 $this->query[0] = 'SELECT date_add, COUNT(`date_add`) as total
 					FROM `'._DB_PREFIX_.'connections`
 					WHERE 1
