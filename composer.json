@@ -2,7 +2,7 @@
   "name": "prestashop/statsvisits",
   "description": "PrestaShop module statsvisits",
   "homepage": "https://github.com/PrestaShop/statsvisits",
-  "license": "AFL - Academic Free License (AFL 3.0)",
+  "license": "AFL-3.0",
   "authors": [
     {
       "name": "PrestaShop SA",
