@@ -31,7 +31,7 @@ if (!defined('_PS_VERSION_')) {
 class statsvisits extends ModuleGraph
 {
     private $html = '';
-    private $query = '';
+    private $query = array();
 
     public function __construct()
     {
