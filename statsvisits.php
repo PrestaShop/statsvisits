@@ -44,7 +44,7 @@ class statsvisits extends ModuleGraph
         parent::__construct();
 
         $this->displayName = $this->trans('Visits and Visitors', array(), 'Modules.Statsvisits.Admin');
-        $this->description = $this->trans('Adds statistics about your visits and visitors to the Stats dashboard.', array(), 'Modules.Statsvisits.Admin');
+        $this->description = $this->trans('Enrich your stats, add statistics about your visits and visitors.', array(), 'Modules.Statsvisits.Admin');
         $this->ps_versions_compliancy = array('min' => '1.7.1.0', 'max' => _PS_VERSION_);
     }
 
