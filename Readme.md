@@ -2,7 +2,7 @@
 
 ## About
 
-Adds statistics about your visits and visitors to the Stats dashboard.
+Enrich your stats, add statistics about your visits and visitors.
 
 ## Reporting issues
 
